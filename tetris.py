@@ -13,13 +13,13 @@ pieces = {
             [Point(-2,0), Point(-1,0), Point(0,0), Point(1, 0)],
             [Point(0,-2), Point(0, -1), Point(0,0), Point(0, 1)],
             [Point(-2,0), Point(-1,0), Point(0,0), Point(1, 0)],
-            [Point(0,-2), Point(0, -1), Point(0,0), Point(0, 1)]
+            [Point(0,-2), Point(0, -1), Point(0,0), Point(0, 1)],
         ],
         'J' : [
+            [Point(-1,0), Point(0,0), Point(1,0), Point(1, 1)],
+            [Point(0,-1), Point(0,0), Point(0,1), Point(-1, 1)],
             [Point(1,0), Point(0,0), Point(-1,0), Point(-1, -1)],
             [Point(0,1), Point(0,0), Point(0,-1), Point(1, -1)],
-            [Point(-1,0), Point(0,0), Point(1,0), Point(1, 1)],
-            [Point(0,-1), Point(0,0), Point(0,1), Point(-1, 1)]
         ],
         'L' : [Point(-1,1), Point(-1,0), Point(0,0), Point(1, 0)],
     }
@@ -38,7 +38,8 @@ class Tetris:
             x = newPos.x + p.x
             y = newPos.y + p.y
             if x < 0 or x > 9 or y > 19 or self.board[y][x] != 0:
-                return False
+                if y >= 0:
+                    return False
         return True
 
     def checkX(self, dx):
@@ -76,13 +77,15 @@ class Tetris:
     def drawPiece(self, color):
         self.playArea.attrset(curses.color_pair(color))
         for p in pieces[self.piece][self.rotation]:
-            if p.y + self.pos.y > 0:
+            if p.y + self.pos.y >= 0:
                 self.playArea.addstr(p.y + self.pos.y + 1, (p.x + self.pos.x)*2 + 1 , "  ")
 
     def choosePiece(self):
         self.piece = random.choice(['I', 'J'])
         self.rotation = 0
         self.pos = Point(5,0)
+        if self.checkPos(self.pos, self.rotation) == False:
+            self.done = True
 
     def loop(self):
         # Draw the piece
@@ -109,7 +112,7 @@ class Tetris:
             else:
                 self.lockPiece()
         self.then = now
-        return True
+        return not self.done
 
     def run(self, stdscr):
 
@@ -117,8 +120,8 @@ class Tetris:
 
         if curses.has_colors():
             fg = curses.COLOR_WHITE
-            curses.init_pair(1, fg, curses.COLOR_RED)
-            curses.init_pair(2, fg, curses.COLOR_CYAN)
+            curses.init_pair(1, fg, curses.COLOR_MAGENTA)
+            curses.init_pair(2, fg, curses.COLOR_YELLOW)
 
         curses.nl()
         curses.noecho()
@@ -137,6 +140,7 @@ class Tetris:
         self.choosePiece()
         self.then = time.time()
         self.acc = 0.0
+        self.done = False
         while self.loop():
             pass
 
