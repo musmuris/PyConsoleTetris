@@ -21,12 +21,47 @@ pieces = {
             [Point(1,0), Point(0,0), Point(-1,0), Point(-1, -1)],
             [Point(0,1), Point(0,0), Point(0,-1), Point(1, -1)],
         ],
-        'L' : [Point(-1,1), Point(-1,0), Point(0,0), Point(1, 0)],
+        'L' : [
+            [Point(-1,1), Point(-1,0), Point(0,0), Point(1, 0)],
+            [Point(-1,-1), Point(0,-1), Point(0,0), Point(0, 1)],
+            [Point(-1,0), Point(0,0), Point(1,0), Point(1, -1)],
+            [Point(0,-1), Point(0,0), Point(0,1), Point(1, 1)]
+        ],
+        'T' : [
+            [Point(-1,0), Point(0,0), Point(1,0), Point(0, 1)],
+            [Point(-1,0), Point(0,0), Point(0,1), Point(0, -1)],
+            [Point(-1,0), Point(0,0), Point(1,0), Point(0, -1)],
+            [Point(0,-1), Point(0,0), Point(0,1), Point(1, 0)]
+        ],
+        'S' : [
+            [Point(-1,1), Point(0,0), Point(0,1), Point(1, 0)],
+            [Point(0,-1), Point(0,0), Point(1,0), Point(1, 1)],
+            [Point(-1,1), Point(0,0), Point(0,1), Point(1, 0)],
+            [Point(0,-1), Point(0,0), Point(1,0), Point(1, 1)]
+        ],
+        'Z' : [
+            [Point(-1,0), Point(0,0), Point(0,1), Point(1, 1)],
+            [Point(0,1), Point(0,0), Point(1,0), Point(1, -1)],
+            [Point(-1,0), Point(0,0), Point(0,1), Point(1, 1)],
+            [Point(0,1), Point(0,0), Point(1,0), Point(1, -1)],
+        ],
+        'O' : [
+            [Point(-1,0), Point(0,0), Point(-1,1), Point(0, 1)],
+            [Point(-1,0), Point(0,0), Point(-1,1), Point(0, 1)],
+            [Point(-1,0), Point(0,0), Point(-1,1), Point(0, 1)],
+            [Point(-1,0), Point(0,0), Point(-1,1), Point(0, 1)],
+        ]
+
     }
 
 colors = {
     'I' : 1,
-    'J' : 2
+    'J' : 2,
+    'L' : 3,
+    'T' : 4,
+    'S' : 5,
+    'Z' : 6,
+    'O' : 7
 }
 
 class Tetris:
@@ -81,7 +116,7 @@ class Tetris:
                 self.playArea.addstr(p.y + self.pos.y + 1, (p.x + self.pos.x)*2 + 1 , "  ")
 
     def choosePiece(self):
-        self.piece = random.choice(['I', 'J'])
+        self.piece = random.choice(['I', 'J', 'L', 'T', 'S', 'Z', 'O'])
         self.rotation = 0
         self.pos = Point(5,0)
         if self.checkPos(self.pos, self.rotation) == False:
@@ -120,8 +155,13 @@ class Tetris:
 
         if curses.has_colors():
             fg = curses.COLOR_WHITE
-            curses.init_pair(1, fg, curses.COLOR_MAGENTA)
-            curses.init_pair(2, fg, curses.COLOR_YELLOW)
+            curses.init_pair(1, fg, curses.COLOR_CYAN)
+            curses.init_pair(2, fg, curses.COLOR_BLUE)
+            curses.init_pair(3, fg, curses.COLOR_GREEN)
+            curses.init_pair(4, fg, curses.COLOR_RED)
+            curses.init_pair(5, fg, curses.COLOR_MAGENTA)
+            curses.init_pair(6, fg, curses.COLOR_WHITE)
+            curses.init_pair(7, fg, curses.COLOR_YELLOW)
 
         curses.nl()
         curses.noecho()
