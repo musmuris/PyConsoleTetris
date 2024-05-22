@@ -64,7 +64,7 @@ colors = {
     'O' : 7
 }
 
-scores = [40, 100, 300, 400]
+scores = [40, 100, 300, 1200]
 
 class Tetris:
     def __init__(self):
@@ -97,7 +97,7 @@ class Tetris:
         if lines == 0:
             return
         self.lines += lines
-        self.level = min(((lines // 5) + 1), 12)
+        self.level = min((self.lines // 5) + 1, 12)
         self.score += scores[lines-1] * self.level
         self.drawScore()
 
@@ -165,6 +165,7 @@ class Tetris:
         else:
             self.piece = self.nextpiece
         self.nextpiece = random.choice(['I', 'J', 'L', 'T', 'S', 'Z', 'O'])
+        self.piece = 'I'
         self.redrawPreview()
         self.rotation = 0
         self.pos = Point(5,0)
