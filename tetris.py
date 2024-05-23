@@ -165,7 +165,6 @@ class Tetris:
         else:
             self.piece = self.nextpiece
         self.nextpiece = random.choice(['I', 'J', 'L', 'T', 'S', 'Z', 'O'])
-        self.piece = 'I'
         self.redrawPreview()
         self.rotation = 0
         self.pos = Point(5,0)
